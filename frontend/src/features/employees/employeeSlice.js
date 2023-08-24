@@ -122,7 +122,7 @@ const employeesSlice = createSlice({
         const updatedIndex = state.employees.findIndex(
           (employee) => employee._id === action.payload._id
         );
-        if (updatedIndex != -1) {
+        if (updatedIndex !== -1) {
           state.employees[updatedIndex] = action.payload;
         }
       })

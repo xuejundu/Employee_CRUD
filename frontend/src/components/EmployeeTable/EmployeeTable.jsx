@@ -8,7 +8,7 @@ import {
 } from "../../features/employees/employeeSlice";
 import "./EmployeeTable.css";
 // import Spinner from "../Spinner/Spinner";
-import EmployeeForm from "../EmployeeForm/EmployeeForm";
+import EmployeeCreateForm from "../EmployeeCreateForm/EmployeeCreateForm";
 
 import {
   Table,
@@ -24,7 +24,7 @@ import {
 import Link from "@mui/material/Link";
 import EmployeeItem from "../EmployeeItem/EmployeeItem";
 
-function EmployeeTable() {
+const EmployeeTable = () => {
   const { employees, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.employees
   );
@@ -78,7 +78,7 @@ function EmployeeTable() {
           Create Employee
         </Button>
       </div>
-      <EmployeeForm
+      <EmployeeCreateForm
         open={openCreateDialog}
         handleClose={handleCloseCreateDialog}
         handleSubmit={handleCreateEmployee}
@@ -86,10 +86,10 @@ function EmployeeTable() {
       <Table size="small" className="employee-table">
         <TableHead>
           <TableRow>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Salary</TableCell>
-            <TableCell></TableCell>
+            <TableCell width="30%">First Name</TableCell>
+            <TableCell width="30%">Last Name</TableCell>
+            <TableCell width="30%">Salary</TableCell>
+            <TableCell width="10%"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -103,6 +103,6 @@ function EmployeeTable() {
       </Link> */}
     </>
   );
-}
+};
 
 export default EmployeeTable;

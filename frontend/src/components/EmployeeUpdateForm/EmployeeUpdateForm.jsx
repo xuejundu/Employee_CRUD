@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createEmployee } from "../../features/employees/employeeSlice";
+import { Formik, Form, Field } from "formik";
 import {
   Dialog,
   DialogTitle,
@@ -10,28 +9,27 @@ import {
   TextField,
   Stack,
 } from "@mui/material";
-import { Formik, Form, Field } from "formik";
-import "./EmployeeForm.css";
 
-function EmployeeForm({ open, handleClose, handleSubmit }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [salary, setSalary] = useState("");
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    handleSubmit({ firstName, lastName, salary });
-  };
-
+const EmployeeUpdateForm = ({
+  open,
+  handleClose,
+  handleUpdate,
+  handleDelete,
+  employee,
+}) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle className="form-title">New Employee Information</DialogTitle>
+      <DialogTitle className="form-title">Employee Information</DialogTitle>
       <DialogContent className="form-content">
         <Formik
-          initialValues={{ firstName: "", lastName: "", salary: "" }}
-          onSubmit={(values, { setSubmitting }) => {
-            handleSubmit(values);
-            setSubmitting(false);
+          initialValues={{
+            firstName: employee.firstName,
+            lastName: employee.lastName,
+            salary: employee.salary,
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+            handleUpdate(values);
           }}
         >
           {({ isSubmitting }) => (
@@ -60,11 +58,22 @@ function EmployeeForm({ open, handleClose, handleSubmit }) {
                 />
               </Stack>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                  Cancel
+                <Button color="primary" type="submit" disabled={isSubmitting}>
+                  Update
                 </Button>
-                <Button type="submit" color="primary" disabled={isSubmitting}>
-                  Save
+                <Button
+                  color="secondary"
+                  disabled={isSubmitting}
+                  onClick={() => handleDelete()}
+                >
+                  Delete
+                </Button>
+                <Button
+                  color="primary"
+                  disabled={isSubmitting}
+                  onClick={() => handleClose()}
+                >
+                  Cancel
                 </Button>
               </DialogActions>
             </Form>
@@ -73,6 +82,6 @@ function EmployeeForm({ open, handleClose, handleSubmit }) {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-export default EmployeeForm;
+export default EmployeeUpdateForm;

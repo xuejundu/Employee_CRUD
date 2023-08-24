@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { TableRow, TableCell, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteEmployee } from "../../features/employees/employeeSlice";
+import {
+  deleteEmployee,
+  updateEmployee,
+} from "../../features/employees/employeeSlice";
 import { useDispatch } from "react-redux";
-import EmployeeDetailsPopup from "../EmployeeDetailsPopup/EmployeeDetailsPopup";
+import EmployeeUpdateForm from "../EmployeeUpdateForm/EmployeeUpdateForm";
+import "./EmployeeItem.css";
 
 const EmployeeItem = ({ employee }) => {
   const dispatch = useDispatch();
@@ -24,6 +28,17 @@ const EmployeeItem = ({ employee }) => {
     setOpenPopup(false);
   };
 
+  const [updatedFields, setUpdatedFields] = useState({
+    firstName: employee.firstName,
+    lastName: employee.lastName,
+    salary: employee.salary,
+  });
+
+  const handleUpdate = (updatedEmployeeData) => {
+    dispatch(updateEmployee({ _id: employee._id, ...updatedEmployeeData }));
+    handleClosePopup();
+  };
+
   return (
     <>
       <TableRow onClick={handleRowClick}>
@@ -39,18 +54,12 @@ const EmployeeItem = ({ employee }) => {
           </IconButton>
         </TableCell>
       </TableRow>
-      <EmployeeDetailsPopup
+      <EmployeeUpdateForm
         open={openPopup}
         handleClose={handleClosePopup}
         employee={employee}
-        handleUpdate={() => {
-          // Handle update action
-          handleClosePopup();
-        }}
-        handleDelete={() => {
-          // Handle delete action
-          handleDelete();
-        }}
+        handleUpdate={handleUpdate}
+        handleDelete={handleDelete}
       />
     </>
   );
