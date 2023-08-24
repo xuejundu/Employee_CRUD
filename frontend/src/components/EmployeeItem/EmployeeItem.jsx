@@ -28,12 +28,6 @@ const EmployeeItem = ({ employee }) => {
     setOpenPopup(false);
   };
 
-  const [updatedFields, setUpdatedFields] = useState({
-    firstName: employee.firstName,
-    lastName: employee.lastName,
-    salary: employee.salary,
-  });
-
   const handleUpdate = (updatedEmployeeData) => {
     dispatch(updateEmployee({ _id: employee._id, ...updatedEmployeeData }));
     handleClosePopup();

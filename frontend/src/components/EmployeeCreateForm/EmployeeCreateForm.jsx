@@ -14,15 +14,6 @@ import { Formik, Form, Field } from "formik";
 import "./EmployeeCreateForm.css";
 
 const EmployeeCreateForm = ({ open, handleClose, handleSubmit }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [salary, setSalary] = useState("");
-
-  // const handleFormSubmit = (event) => {
-  //   event.preventDefault();
-  //   handleSubmit({ firstName, lastName, salary });
-  // };
-
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle color="primary" className="form-title">
