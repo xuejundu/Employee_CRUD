@@ -1,12 +1,28 @@
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteEmployee,
   getEmployees,
+  createEmployee,
 } from "../../features/employees/employeeSlice";
 import "./EmployeeTable.css";
-import Spinner from "../Spinner";
-import EmployeeEditPopup from "../EmployeeEditPopup/EmployeeEditPopup";
+// import Spinner from "../Spinner/Spinner";
+import EmployeeForm from "../EmployeeForm/EmployeeForm";
+
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Button,
+  Grid,
+  Typography,
+} from "@mui/material";
+import Link from "@mui/material/Link";
+import EmployeeItem from "../EmployeeItem/EmployeeItem";
 
 function EmployeeTable() {
   const { employees, isError, isSuccess, isLoading, message } = useSelector(
@@ -23,39 +39,69 @@ function EmployeeTable() {
     dispatch(getEmployees());
   }, [dispatch]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  //   if (isLoading) {
+  //     return <Spinner />;
+  //   }
+
+  const preventDefault = (event) => {
+    event.preventDefault();
+  };
+
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+
+  const handleCreateClick = () => {
+    setOpenCreateDialog(true);
+  };
+
+  const handleCloseCreateDialog = () => {
+    setOpenCreateDialog(false);
+  };
+
+  const handleCreateEmployee = (employeeData) => {
+    const newEmployee = employeeData;
+    dispatch(createEmployee(newEmployee));
+    handleCloseCreateDialog();
+  };
 
   return (
-    <div className="employee-table">
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Salary</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+    <>
+      <div className="create-employee">
+        <Typography variant="h6" color="secondary">
+          EMPLOYEE
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateClick}
+          className="btn"
+        >
+          Create Employee
+        </Button>
+      </div>
+      <EmployeeForm
+        open={openCreateDialog}
+        handleClose={handleCloseCreateDialog}
+        handleSubmit={handleCreateEmployee}
+      />
+      <Table size="small" className="employee-table">
+        <TableHead>
+          <TableRow>
+            <TableCell>First Name</TableCell>
+            <TableCell>Last Name</TableCell>
+            <TableCell>Salary</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {employees.map((employee) => (
-            <tr key={employee._id}>
-              <td>{employee.firstName}</td>
-              <td>{employee.lastName}</td>
-              <td>{employee.salary}</td>
-              <td>
-                {/* <button>Edit</button> */}
-                <EmployeeEditPopup employee={employee} />
-                <button onClick={() => dispatch(deleteEmployee(employee._id))}>
-                  Delete
-                </button>
-              </td>
-            </tr>
+            <EmployeeItem key={employee._id} employee={employee} />
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+      {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+        See more employees
+      </Link> */}
+    </>
   );
 }
 

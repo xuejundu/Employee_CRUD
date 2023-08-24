@@ -1,51 +1,77 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createEmployee } from "../../features/employees/employeeSlice";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Stack,
+} from "@mui/material";
+import { Formik, Form, Field } from "formik";
+import "./EmployeeForm.css";
 
-function EmployeeForm() {
-  const dispatch = useDispatch();
+function EmployeeForm({ open, handleClose, handleSubmit }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [salary, setSalary] = useState("");
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const newEmployee = { firstName, lastName, salary };
-    dispatch(createEmployee(newEmployee));
-    // Reset form fields
-    setFirstName("");
-    setLastName("");
-    setSalary("");
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    handleSubmit({ firstName, lastName, salary });
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <label>
-        First Name:
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-      </label>
-      <label>
-        Last Name:
-        <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-      </label>
-      <label>
-        Salary:
-        <input
-          type="number"
-          value={salary}
-          onChange={(e) => setSalary(e.target.value)}
-        />
-      </label>
-      <button type="submit">Create Employee</button>
-    </form>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle className="form-title">New Employee Information</DialogTitle>
+      <DialogContent className="form-content">
+        <Formik
+          initialValues={{ firstName: "", lastName: "", salary: "" }}
+          onSubmit={(values, { setSubmitting }) => {
+            handleSubmit(values);
+            setSubmitting(false);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <Stack spacing={2}>
+                <Stack direction="row" spacing={2}>
+                  <Field
+                    as={TextField}
+                    name="firstName"
+                    label="First Name"
+                    fullWidth
+                  />
+                  <Field
+                    as={TextField}
+                    name="lastName"
+                    label="Last Name"
+                    fullWidth
+                  />
+                </Stack>
+                <Field
+                  as={TextField}
+                  name="salary"
+                  label="Salary"
+                  type="number"
+                  fullWidth
+                />
+              </Stack>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary" disabled={isSubmitting}>
+                  Save
+                </Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
+      </DialogContent>
+    </Dialog>
   );
 }
 

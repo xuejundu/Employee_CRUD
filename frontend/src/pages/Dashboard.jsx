@@ -1,13 +1,11 @@
-import { useState } from "react";
 import EmployeeTable from "../components/EmployeeTable/EmployeeTable";
-import EmployeeForm from "../components/EmployeeForm/EmployeeForm";
+import { Container, Typography } from "@mui/material";
 
 function Dashboard() {
   return (
-    <section>
-      <EmployeeForm />
+    <Container maxWidth="lg">
       <EmployeeTable />
-    </section>
+    </Container>
   );
 }
 

@@ -1,24 +1,19 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import logo from "../../images/logo.svg";
 import "./Header.css";
 
-function Header() {
+const Header = () => {
   return (
-    <div>
-      <header className="header">
-        <div className="logo">
-          <Link to="/">
-            <img src={logo} alt="eCapital Logo" />
-          </Link>
-        </div>
-        <ul>
-          <li>
-            <Link to="/">Employees</Link>
-          </li>
-        </ul>
-      </header>
-    </div>
+    <AppBar position="static" className="app-bar">
+      <Toolbar>
+        <img src={logo} alt="Company Logo" />
+        {/* <Typography variant="h6" className="header-title">
+          EMPLOYEE DASHBOARD
+        </Typography> */}
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
 export default Header;
