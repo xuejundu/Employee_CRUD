@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteEmployee,
   getEmployees,
   createEmployee,
 } from "../../features/employees/employeeSlice";
@@ -18,10 +17,9 @@ import {
   TableBody,
   Paper,
   Button,
-  Grid,
   Typography,
+  TablePagination,
 } from "@mui/material";
-import Link from "@mui/material/Link";
 import EmployeeItem from "../EmployeeItem/EmployeeItem";
 
 const EmployeeTable = () => {
@@ -63,6 +61,22 @@ const EmployeeTable = () => {
     handleCloseCreateDialog();
   };
 
+  // Add Pagination
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Adjust as needed
+
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <>
       <div className="create-employee">
@@ -93,14 +107,20 @@ const EmployeeTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {employees.map((employee) => (
+          {employees.slice(startIndex, endIndex).map((employee) => (
             <EmployeeItem key={employee._id} employee={employee} />
           ))}
         </TableBody>
       </Table>
-      {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more employees
-      </Link> */}
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 20]}
+        component="div"
+        count={employees.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
   );
 };

@@ -19,7 +19,9 @@ const EmployeeUpdateForm = ({
 }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle className="form-title">Employee Information</DialogTitle>
+      <DialogTitle color="primary" className="form-title">
+        Employee Information
+      </DialogTitle>
       <DialogContent className="form-content">
         <Formik
           initialValues={{
