@@ -7,24 +7,24 @@ const Employee = require("../models/employeeModel");
 const getEmployee = asyncHandler(async (req, res) => {
   const employees = await Employee.find();
 
-  res.status(200).json({ message: employees });
+  res.status(200).json(employees);
 });
 
 // @description create an employee
 // @route POST /employee
 const createEmployee = asyncHandler(async (req, res) => {
-  const { firstname, lastname, salary } = req.body;
+  const { firstName, lastName, salary } = req.body;
 
   // check if all fields are filled
-  if (!firstname || !lastname || !salary) {
+  if (!firstName || !lastName || !salary) {
     res.status(400);
     throw new Error("Please add all fields");
   }
 
   // check if employee exists
   const employeeExists = await Employee.findOne({
-    firstname: firstname,
-    lastname: lastname,
+    firstName: firstName,
+    lastName: lastName,
     salary: salary,
   });
   if (employeeExists) {
@@ -34,16 +34,16 @@ const createEmployee = asyncHandler(async (req, res) => {
 
   // create employee entry
   const employee = await Employee.create({
-    firstname,
-    lastname,
+    firstName,
+    lastName,
     salary,
   });
 
   if (employee) {
     res.status(201).json({
       _id: employee.id,
-      firstname: employee.firstname,
-      lastname: employee.lastname,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
       salary: employee.salary,
     });
   } else {
@@ -61,13 +61,13 @@ const updateEmployee = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Employee not found");
   }
-  console.log(req.params.body);
+
   const updatedEmployee = await Employee.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
   );
-  res.status(200).json({ message: updatedEmployee });
+  res.status(200).json(updatedEmployee);
 });
 
 // @description delete an employee
@@ -80,8 +80,8 @@ const deleteEmployee = asyncHandler(async (req, res) => {
     throw new Error("Employee not found");
   }
 
-  const deletedEmployee = await Employee.findByIdAndDelete(req.params.id);
-  res.status(200).json({ message: deletedEmployee });
+  await Employee.findByIdAndDelete(req.params.id);
+  res.status(200).json({ id: req.params.id });
 });
 
 module.exports = {

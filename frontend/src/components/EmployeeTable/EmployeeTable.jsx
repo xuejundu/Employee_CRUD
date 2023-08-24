@@ -1,13 +1,31 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteEmployee,
+  getEmployees,
+} from "../../features/employees/employeeSlice";
 import "./EmployeeTable.css";
+import Spinner from "../Spinner";
+import EmployeeEditPopup from "../EmployeeEditPopup/EmployeeEditPopup";
 
 function EmployeeTable() {
-  // test
-  const employeeData = [
-    { id: 1, firstName: "John", lastName: "Doe", salary: 60000 },
-    { id: 2, firstName: "Jane", lastName: "Smith", salary: 70000 },
-  ];
-  const [employees, setEmployees] = useState(employeeData);
+  const { employees, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.employees
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+
+    dispatch(getEmployees());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="employee-table">
@@ -22,13 +40,16 @@ function EmployeeTable() {
         </thead>
         <tbody>
           {employees.map((employee) => (
-            <tr key={employee.id}>
+            <tr key={employee._id}>
               <td>{employee.firstName}</td>
               <td>{employee.lastName}</td>
               <td>{employee.salary}</td>
               <td>
-                <button>Edit</button>
-                <button>Delete</button>
+                {/* <button>Edit</button> */}
+                <EmployeeEditPopup employee={employee} />
+                <button onClick={() => dispatch(deleteEmployee(employee._id))}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
