@@ -46,9 +46,6 @@ const EmployeeItem = ({ employee }) => {
         <TableCell>{employee.lastName}</TableCell>
         <TableCell>{employee.salary}</TableCell>
         <TableCell>
-          <IconButton color="primary">
-            <EditIcon />
-          </IconButton>
           <IconButton color="secondary" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
