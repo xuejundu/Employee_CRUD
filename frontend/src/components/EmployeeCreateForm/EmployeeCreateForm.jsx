@@ -16,9 +16,7 @@ import "./EmployeeCreateForm.css";
 const EmployeeCreateForm = ({ open, handleClose, handleSubmit }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle color="primary" className="form-title">
-        New Employee Information
-      </DialogTitle>
+      <DialogTitle className="form-title">New Employee Information</DialogTitle>
       <DialogContent className="form-content">
         <Formik
           initialValues={{ firstName: "", lastName: "", salary: "" }}

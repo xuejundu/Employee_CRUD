@@ -7,7 +7,7 @@ import {
 } from "../../features/employees/employeeSlice";
 import "./EmployeeTable.css";
 // import Spinner from "../Spinner/Spinner";
-import EmployeeCreateForm from "../EmployeeCreateForm/EmployeeCreateForm";
+import EmployeeForm from "../EmployeeForm/EmployeeForm";
 
 import {
   Table,
@@ -58,7 +58,6 @@ const EmployeeTable = () => {
   const handleCreateEmployee = (employeeData) => {
     const newEmployee = employeeData;
     dispatch(createEmployee(newEmployee));
-    handleCloseCreateDialog();
   };
 
   // Add Pagination
@@ -92,10 +91,12 @@ const EmployeeTable = () => {
           Create Employee
         </Button>
       </div>
-      <EmployeeCreateForm
+      <EmployeeForm
         open={openCreateDialog}
-        handleClose={handleCloseCreateDialog}
-        handleSubmit={handleCreateEmployee}
+        onClose={handleCloseCreateDialog}
+        onSubmit={handleCreateEmployee}
+        title={"Create Employee"}
+        employee={{ firstName: "", lastName: "", salary: "" }}
       />
       <Table size="small" className="employee-table">
         <TableHead>

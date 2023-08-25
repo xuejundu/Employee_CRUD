@@ -7,7 +7,7 @@ import {
   updateEmployee,
 } from "../../features/employees/employeeSlice";
 import { useDispatch } from "react-redux";
-import EmployeeUpdateForm from "../EmployeeUpdateForm/EmployeeUpdateForm";
+import EmployeeForm from "../EmployeeForm/EmployeeForm";
 import "./EmployeeItem.css";
 
 const EmployeeItem = ({ employee }) => {
@@ -38,19 +38,24 @@ const EmployeeItem = ({ employee }) => {
       <TableRow onClick={handleRowClick}>
         <TableCell>{employee.firstName}</TableCell>
         <TableCell>{employee.lastName}</TableCell>
-        <TableCell>{employee.salary}</TableCell>
+        <TableCell>
+          {employee.salary.toLocaleString(undefined, {
+            style: "currency",
+            currency: "USD",
+          })}
+        </TableCell>
         <TableCell>
           <IconButton color="secondary" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </TableCell>
       </TableRow>
-      <EmployeeUpdateForm
+      <EmployeeForm
         open={openPopup}
-        handleClose={handleClosePopup}
+        onClose={handleClosePopup}
+        onSubmit={handleUpdate}
+        title={"Update Employee"}
         employee={employee}
-        handleUpdate={handleUpdate}
-        handleDelete={handleDelete}
       />
     </>
   );

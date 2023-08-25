@@ -8,20 +8,22 @@ import {
   Button,
   TextField,
   Stack,
+  Grid,
 } from "@mui/material";
 
-const EmployeeUpdateForm = ({
+import "./EmployeeUpdateForm.css";
+
+const EmployeeUpdateForm2 = ({
   open,
   handleClose,
   handleUpdate,
   handleDelete,
   employee,
 }) => {
+  let salary = 0;
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle color="primary" className="form-title">
-        Employee Information
-      </DialogTitle>
+      <DialogTitle className="form-title">Employee Information</DialogTitle>
       <DialogContent className="form-content">
         <Formik
           initialValues={{
@@ -30,8 +32,9 @@ const EmployeeUpdateForm = ({
             salary: employee.salary,
           }}
           onSubmit={(values) => {
-            console.log(values);
-            handleUpdate(values);
+            const updateValue = { ...values, salary: salary };
+            console.log(updateValue, "updateValue");
+            handleUpdate(updateValue);
           }}
         >
           {({ isSubmitting }) => (
@@ -83,6 +86,97 @@ const EmployeeUpdateForm = ({
         </Formik>
       </DialogContent>
     </Dialog>
+  );
+};
+
+const EmployeeUpdateForm = ({
+  open,
+  handleClose,
+  handleUpdate,
+  handleDelete,
+  employee,
+}) => {
+  const [firstName, setFirstName] = useState(employee.firstName);
+  const [lastName, setLastName] = useState(employee.lastName);
+  const [salary, setSalary] = useState(employee.salary);
+
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle className="form-title">Employee Information</DialogTitle>
+      <DialogContent className="form-content">
+        <Grid>
+          <TextField
+            value={firstName}
+            placeholder="First Name"
+            label="First Name"
+            onChange={(event) => {
+              setFirstName(event.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            value={lastName}
+            placeholder="Last Name"
+            label="Last Name"
+            onChange={(event) => {
+              setLastName(event.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Grid>
+        <CustomCurrencyInput
+          value={salary}
+          placeholder="Salary"
+          label="Salary"
+          onChange={(value) => {
+            setSalary(value);
+          }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <Grid>
+          <Button
+            color="primary"
+            type="submit"
+            onClick={() => handleUpdate({})}
+          >
+            Update
+          </Button>
+          <Button color="secondary" onClick={() => handleDelete()}>
+            Delete
+          </Button>
+          <Button color="primary" onClick={() => handleClose()}>
+            Cancel
+          </Button>
+        </Grid>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const CustomCurrencyInput = ({ value, onChange, ...props }) => {
+  const formatCurrency = (value) => {
+    const numericValue =
+      parseFloat(value.toString().replace(/[^0-9.-]/g, "")) || 0;
+    return `$${numericValue}`;
+  };
+
+  const handleValueChange = (event) => {
+    const formattedValue = formatCurrency(event.target.value);
+    onChange(formattedValue);
+  };
+
+  return (
+    <TextField
+      {...props}
+      value={formatCurrency(value)}
+      onChange={handleValueChange}
+    />
   );
 };
 
