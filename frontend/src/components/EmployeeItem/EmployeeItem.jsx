@@ -27,7 +27,6 @@ const EmployeeItem = ({ employee }) => {
 
   const handleDelete = () => {
     dispatch(deleteEmployee(employee._id));
-    setOpenPopup(false);
   };
 
   const handleUpdate = (updatedEmployeeData) => {
