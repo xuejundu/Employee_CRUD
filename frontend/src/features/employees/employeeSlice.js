@@ -84,7 +84,7 @@ export const deleteEmployee = createAsyncThunk(
 const employeesSlice = createSlice({
   name: "employees",
   initialState,
-  reducers: {},
+  reducers: { reset: (state) => initialState },
   extraReducers: (builder) => {
     builder
       .addCase(createEmployee.pending, (state) => {
@@ -150,4 +150,5 @@ const employeesSlice = createSlice({
   },
 });
 
+export const { reset } = employeesSlice.actions;
 export default employeesSlice.reducer;

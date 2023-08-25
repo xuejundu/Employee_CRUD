@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getEmployees,
   createEmployee,
+  reset,
 } from "../../features/employees/employeeSlice";
 import "./EmployeeTable.css";
-// import Spinner from "../Spinner/Spinner";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
 
 import {
@@ -37,10 +37,6 @@ const EmployeeTable = () => {
     dispatch(getEmployees());
   }, [dispatch]);
 
-  //   if (isLoading) {
-  //     return <Spinner />;
-  //   }
-
   const preventDefault = (event) => {
     event.preventDefault();
   };
@@ -53,6 +49,7 @@ const EmployeeTable = () => {
 
   const handleCloseCreateDialog = () => {
     setOpenCreateDialog(false);
+    dispatch(reset);
   };
 
   const handleCreateEmployee = (employeeData) => {

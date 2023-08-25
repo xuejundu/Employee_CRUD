@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {
   deleteEmployee,
   updateEmployee,
+  reset,
 } from "../../features/employees/employeeSlice";
 import { useDispatch } from "react-redux";
 import EmployeeForm from "../EmployeeForm/EmployeeForm";
@@ -21,6 +22,7 @@ const EmployeeItem = ({ employee }) => {
 
   const handleClosePopup = () => {
     setOpenPopup(false);
+    dispatch(reset);
   };
 
   const handleDelete = () => {

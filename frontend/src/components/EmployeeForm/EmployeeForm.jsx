@@ -16,14 +16,25 @@ const EmployeeForm = ({ open, onClose, onSubmit, title, employee }) => {
   const [lastName, setLastName] = React.useState(employee.lastName);
   const [salary, setSalary] = React.useState(employee.salary);
 
+  const resetForm = () => {
+    setFirstName(employee.firstName);
+    setLastName(employee.lastName);
+    setSalary(employee.salary);
+  };
+
   const handleSubmit = () => {
     const updatedEmployee = { id: employee._id, firstName, lastName, salary };
     onSubmit(updatedEmployee);
     onClose();
   };
 
+  const handleClose = () => {
+    onClose();
+    resetForm();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={handleClose}>
       <DialogTitle className="form-title">{title}</DialogTitle>
       <DialogContent className="form-content">
         <Stack spacing={2}>
@@ -53,7 +64,7 @@ const EmployeeForm = ({ open, onClose, onSubmit, title, employee }) => {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">
